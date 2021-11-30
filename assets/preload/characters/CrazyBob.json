@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				-1
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "CrazyBob Idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-20,
+				15
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "CrazyBob Sing Up",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-10,
+				6
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "CrazyBob Sing Left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-2,
+				1
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "CrazyBob Sing Right",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				-15
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "CrazyBob Sing Down",
+			"indices": []
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/CrazyBob",
+	"position": [
+		-310,
+		-10
+	],
+	"healthicon": "CrazyBob",
+	"flip_x": false,
+	"healthbar_colors": [
+		243,
+		255,
+		110
+	],
+	"camera_position": [
+		-120,
+		-110
+	],
+	"sing_duration": 4,
+	"scale": 1.1
+}
