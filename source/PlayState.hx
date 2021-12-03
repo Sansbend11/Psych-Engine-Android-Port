@@ -172,7 +172,6 @@ class PlayState extends MusicBeatState
 	public static var usedPractice:Bool = false;
 	public static var changedDifficulty:Bool = false;
 	public static var cpuControlled:Bool = false;
-	var runCutscene:Bool = false;
 
 	var botplaySine:Float = 0;
 	var botplayTxt:FlxText;
@@ -223,7 +222,6 @@ class PlayState extends MusicBeatState
 	public var songMisses:Int = 0;
 	public var ghostMisses:Int = 0;
 	public var scoreTxt:FlxText;
-	var creditTxt:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
 
@@ -909,12 +907,12 @@ class PlayState extends MusicBeatState
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
 
-		creditTxt = new FlxText(876, 620, 348);
-        creditTxt.text = 'Ported by Suffer';
-        creditTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, RIGHT);
-        creditTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 3, 1);       
-        creditTxt.scrollFactor.set();
-        add(creditTxt);
+    		creditTxt = new FlxText(876, 620, 348);
+            creditTxt.text = 'Ported by Suffer';
+            creditTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, RIGHT);
+            creditTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 3, 1);       
+            creditTxt.scrollFactor.set();
+            add(creditTxt);
 
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1044,13 +1042,9 @@ class PlayState extends MusicBeatState
 				case 'senpai' | 'roses' | 'thorns':
 					if(daSong == 'roses') FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
+
 				default:
-					if (dialogueJson == null)
-						startCountdown();
-					else
-					{
-                        startDialogue(dialogueJson);
-					}
+					startCountdown();
 			}
 			seenCutscene = true;
 		} else {
@@ -1132,45 +1126,37 @@ class PlayState extends MusicBeatState
 	}
 
 	public function startVideo(name:String):Void {
+		#if VIDEOS_ALLOWED
 		var foundFile:Bool = false;
-		var fileName = name;
-		if(OpenFlAssets.exists("assets/videos/" + fileName + ".webm")) 
-		{
+		var fileName = Paths.video(name);
+		if(OpenFlAssets.exists(fileName)) {
 			foundFile = true;
 		}
 
-		if(foundFile) 
-		{
-			if (!runCutscene)
-		    {
-	            FlxG.switchState(new VideoState2('assets/videos/' + fileName + '.webm', function()
-	            {
-	                FlxG.switchState(new PlayState());  
-	                runCutscene = true;                          
-	            }));
-		    }
-		    else
-		    {
-				if(endingSong) 
-				{
+		if(foundFile) {
+			inCutscene = true;
+			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+			bg.scrollFactor.set();
+			bg.cameras = [camHUD];
+			add(bg);
+
+			(new FlxVideo(fileName)).finishCallback = function() {
+				remove(bg);
+				if(endingSong) {
 					endSong();
-				} 
-				else 
-				{
+				} else {
 					startCountdown();
 				}
-		    }
-		} 
-		else 
-		{
-			if(endingSong) 
-			{
-				endSong();
-			} 
-			else 
-			{
-				startCountdown();
 			}
+			return;
+		} else {
+			FlxG.log.warn('Couldnt find video file: ' + fileName);
+		}
+		#end
+		if(endingSong) {
+			endSong();
+		} else {
+			startCountdown();
 		}
 	}	
 
@@ -2936,7 +2922,6 @@ class PlayState extends MusicBeatState
 		endingSong = true;
 		camZooming = false;
 		inCutscene = false;
-		runCutscene = false; 
 		updateTime = false;
 
 		deathCounter = 0;
