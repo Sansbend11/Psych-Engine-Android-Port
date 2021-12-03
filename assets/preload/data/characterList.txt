@@ -1,9 +1,4 @@
 bf
-crazybob
-spongenut
-bfp
-pibby
-
 dad
 gf
 spooky
@@ -24,4 +19,3 @@ senpai-angry
 spirit
 bf-pixel-opponent
 pico-player
-
